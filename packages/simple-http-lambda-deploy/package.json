@@ -1,0 +1,23 @@
+{
+  "name": "@fmtk/simple-http-lambda-deploy",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@aws-cdk/aws-apigateway": "^1.12.0",
+    "@aws-cdk/aws-iam": "^1.12.0",
+    "@aws-cdk/aws-lambda": "^1.12.0",
+    "@aws-cdk/aws-lambda-event-sources": "^1.12.0",
+    "@aws-cdk/core": "^1.12.0",
+    "@fmtk/simple-http-lambda": "^0.0.0",
+    "aws-cdk": "^1.12.0"
+  },
+  "scripts": {
+    "build": "yarn lint && tsc",
+    "clean": "rm -rf lib/",
+    "lint": "eslint \"src/**\"",
+    "start": "cdk synth --no-staging && sam local start-api -t cdk.out/SimpleHttpLambdaTestStack.template.json"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "@fmtk/simple-http-root",
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "yarn clean && yarn compile && yarn lint",
+    "cdk": "yarn workspace @fmtk/simple-http-lambda-deploy cdk",
+    "clean": "lerna run clean",
+    "clean-npm": "find . -name node_modules -type d -prune -exec rm -rf {} \\;",
+    "compile": "ts-build packages/",
+    "debug:lambda": "yarn dev:lambda --debug-port=5858",
+    "dev:lambda": "yarn workspace @fmtk/simple-http-lambda-deploy start",
+    "lint": "lerna run lint",
+    "watch:compile": "yarn compile -w"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "@fmtk/simple-http-lambda/**"
+    ]
+  },
+  "devDependencies": {
+    "@fmtk/ts-build": "^0.5.0",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "lerna": "^3.16.4",
+    "prettier": "^1.18.2",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  }
+}

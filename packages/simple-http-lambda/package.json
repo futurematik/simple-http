@@ -1,0 +1,18 @@
+{
+  "name": "@fmtk/simple-http-lambda",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@fmtk/simple-http": "^0.0.0",
+    "@types/aws-lambda": "^8.10.33"
+  },
+  "scripts": {
+    "build": "yarn lint && tsc",
+    "clean": "rm -rf lib/",
+    "lint": "eslint \"src/**\""
+  },
+  "devDependencies": {}
+}
