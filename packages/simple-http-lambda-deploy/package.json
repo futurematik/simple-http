@@ -11,6 +11,7 @@
     "@aws-cdk/aws-lambda": "^1.12.0",
     "@aws-cdk/aws-lambda-event-sources": "^1.12.0",
     "@aws-cdk/core": "^1.12.0",
+    "@fmtk/package-path": "^0.1.2",
     "@fmtk/simple-http-lambda": "^0.0.0",
     "aws-cdk": "^1.12.0"
   },

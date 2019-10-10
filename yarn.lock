@@ -409,6 +409,11 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
+"@fmtk/package-path@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/@fmtk/package-path/-/package-path-0.1.2.tgz#16c671e9e4ce28fa8feae84815ba5ea826d756ab"
+  integrity sha512-XMSnnThdb6EAzI9ToI/Ca8JeE3jqKOdplzFVtlVfyYgb10FaXzcDTbh83PfdXECX9oTxeAkkVxj9JEF7VlLSxg==
+
 "@fmtk/ts-build@^0.5.0":
   version "0.5.0"
   resolved "https://registry.npmjs.org/@fmtk/ts-build/-/ts-build-0.5.0.tgz#97d8f3c48b128359b4b35b6e8f2d3df69916965f"

@@ -6,6 +6,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@fmtk/package-path": "^0.1.2",
     "@fmtk/simple-http": "^0.0.0",
     "@types/aws-lambda": "^8.10.33"
   },
