@@ -8,7 +8,7 @@
   ],
   "eslint.lintTask.enable": true,
   "eslint.workingDirectories": [
-    { "directory": "packages/simple-http", "changeProcessCWD": true }
+    { "directory": "packages/simple-http", "changeProcessCWD": true },
     { "directory": "packages/simple-http-lambda", "changeProcessCWD": true }
   ]
 }
