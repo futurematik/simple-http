@@ -4,7 +4,7 @@
   "main": "lib/index.js",
   "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@fmtk/package-path": "^0.1.2",
     "@fmtk/simple-http": "^0.0.0",

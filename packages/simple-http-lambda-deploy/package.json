@@ -13,12 +13,17 @@
     "@aws-cdk/core": "^1.12.0",
     "@fmtk/package-path": "^0.1.2",
     "@fmtk/simple-http-lambda": "^0.0.0",
-    "aws-cdk": "^1.12.0"
+    "aws-cdk": "^1.12.0",
+    "commondir": "^1.0.1"
   },
   "scripts": {
     "build": "yarn lint && tsc",
-    "clean": "rm -rf lib/",
+    "clean": "rm -rf lib/ cdk.out/",
     "lint": "eslint \"src/**\"",
-    "start": "cdk synth --no-staging && sam local start-api -t cdk.out/SimpleHttpLambdaTestStack.template.json"
+    "start": "cdk synth --no-staging -c debugging=true && sam local start-api -t cdk.out/SimpleHttpLambdaTestStack.template.json",
+    "sam-build": "cdk synth --no-staging && sam build -t cdk.out/SimpleHttpLambdaTestStack.template.json"
+  },
+  "devDependencies": {
+    "@types/commondir": "^1.0.0"
   }
 }
