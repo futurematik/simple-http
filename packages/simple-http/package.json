@@ -1,17 +1,15 @@
 {
   "name": "@fmtk/simple-http",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
   "license": "MIT",
   "private": false,
-  "dependencies": {},
   "scripts": {
     "build": "yarn lint && tsc",
     "clean": "rm -rf lib/",
     "lint": "eslint \"src/**\""
   },
-  "devDependencies": {},
   "publishConfig": {
     "access": "public"
   }
