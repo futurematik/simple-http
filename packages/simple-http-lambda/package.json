@@ -15,5 +15,8 @@
     "clean": "rm -rf lib/",
     "lint": "eslint \"src/**\""
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
 }
