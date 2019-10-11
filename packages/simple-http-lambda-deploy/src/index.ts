@@ -2,31 +2,14 @@ import path from 'path';
 import * as agw from '@aws-cdk/aws-apigateway';
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import { getHandler } from '@fmtk/package-path';
-import * as testModule from '@fmtk/simple-http-lambda/lib/testLambda';
-import commondir from 'commondir';
 
 class SimpleHttpLambdaTestStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const source = getHandler(testModule, 'testLambda');
-
-    if (scope.node.tryGetContext('debugging') === 'true') {
-      // need to include everything, because symlinks
-      // outside the context won't work
-      const handler = path.resolve(source.code, source.handler);
-      const common = commondir([source.code, __filename]);
-
-      if (common !== '/') {
-        source.code = common;
-        source.handler = path.relative(common, handler);
-      }
-    }
-
     const handler = new lambda.Function(this, 'TestFunction', {
-      code: lambda.AssetCode.fromAsset(source.code),
-      handler: source.handler,
+      code: lambda.AssetCode.fromAsset(path.join(__dirname, '../dist')),
+      handler: 'lambda.handler',
       runtime: lambda.Runtime.NODEJS_10_X,
     });
 

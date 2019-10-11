@@ -1,17 +1,18 @@
 {
   "name": "@fmtk/simple-http-lambda",
   "version": "0.1.0",
-  "main": "lib/index.js",
+  "main": "lib/bundle.js",
+  "types": "lib/index.d.ts",
   "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
   "license": "MIT",
   "private": false,
   "dependencies": {
     "@fmtk/package-path": "^0.1.2",
-    "@fmtk/simple-http": "^0.1.0",
-    "@types/aws-lambda": "^8.10.33"
+    "@fmtk/simple-http": "^0.1.0"
   },
   "scripts": {
-    "build": "yarn lint && tsc",
+    "build": "yarn clean && yarn lint && yarn compile",
+    "compile": "rollup -c",
     "clean": "rm -rf lib/",
     "lint": "eslint \"src/**\""
   },
