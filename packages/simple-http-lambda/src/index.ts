@@ -1,4 +1,8 @@
-import { HttpHandler, HttpValueCollection } from '@fmtk/simple-http';
+import {
+  HttpHandler,
+  HttpValueCollection,
+  HttpHeaders,
+} from '@fmtk/simple-http';
 import {
   APIGatewayProxyHandler,
   APIGatewayProxyEvent,
@@ -21,7 +25,7 @@ export function toAwsLambdaHandler(
         context: {
           pathParameters: event.pathParameters,
         },
-        headers: normaliseValues(event.multiValueHeaders),
+        headers: new HttpHeaders(event.multiValueHeaders),
         method: event.httpMethod,
         path: event.path,
         query: normaliseValues(event.multiValueQueryStringParameters),
@@ -49,11 +53,8 @@ export function toAwsLambdaHandler(
       return {
         body: responseBody,
         isBase64Encoded,
-        multiValueHeaders: Object.entries(result.headers).reduce(
-          (a, [k, v]) => ({ ...a, [k]: Array.isArray(v) ? v : [v] }),
-          {},
-        ),
-        statusCode: result.statusCode,
+        multiValueHeaders: result.headers && result.headers.multiValues(),
+        statusCode: result.status,
       };
     } catch (e) {
       console.error(e);

@@ -1,7 +1,7 @@
 import { HttpHandler } from './HttpHandler';
 import { HttpResponse } from './HttpResponse';
 import { HttpRequest } from './HttpRequest';
-import { getHeader } from './getHeader';
+import { HttpHeaders } from './HttpHeaders';
 
 export function jsonHandler<Request extends object, Response extends object>(
   handler: HttpHandler<Request, Response>,
@@ -9,7 +9,8 @@ export function jsonHandler<Request extends object, Response extends object>(
   return async function(request): Promise<HttpResponse> {
     const { body, ...rest } = request;
 
-    const contentType = getHeader(request.headers, 'Content-Type');
+    debugger;
+    const contentType = request.headers.get('Content-Type');
     let parsedBody: Request | undefined;
 
     if (body) {
@@ -27,12 +28,12 @@ export function jsonHandler<Request extends object, Response extends object>(
 
       if (typeof parsedBody === 'undefined') {
         return {
-          statusCode: 415,
+          status: 415,
           body: `unsupported media type`,
-          headers: {
+          headers: new HttpHeaders({
             Accept: 'application/json',
             'Content-Type': 'text/plain',
-          },
+          }),
         };
       }
     }
@@ -48,6 +49,12 @@ export function jsonHandler<Request extends object, Response extends object>(
     return {
       ...response,
       body: JSON.stringify(response.body),
+      headers: HttpHeaders.defaults(
+        {
+          'Content-Type': 'application/json',
+        },
+        response.headers,
+      ),
     };
   };
 }

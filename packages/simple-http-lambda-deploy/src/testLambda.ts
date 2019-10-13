@@ -5,10 +5,7 @@ export const handler = toAwsLambdaHandler(
   jsonHandler(
     async (request: HttpRequest<{}>): Promise<HttpResponse<{}>> => {
       return {
-        statusCode: 200,
-        headers: {
-          'content-type': 'application/json',
-        },
+        status: 200,
         body: request,
       };
     },

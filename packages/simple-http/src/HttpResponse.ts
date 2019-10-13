@@ -1,7 +1,7 @@
-import { HttpValueCollection } from './HttpValueCollection';
+import { HttpHeaders } from './HttpHeaders';
 
 export interface HttpResponse<Body = string | Buffer | undefined> {
   body: Body;
-  headers: HttpValueCollection;
-  statusCode: number;
+  headers?: HttpHeaders;
+  status: number;
 }

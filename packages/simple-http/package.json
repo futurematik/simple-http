@@ -8,10 +8,12 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "yarn clean && yarn lint && yarn compile",
+    "build": "yarn clean && yarn test && yarn lint && yarn compile",
     "compile": "rollup -c",
-    "clean": "rm -rf lib/",
-    "lint": "eslint \"src/**\""
+    "clean": "rm -rf lib/ dist/",
+    "lint": "eslint src/ --ext=ts,tsx",
+    "test": "jest",
+    "watch:compile": "rollup -c -w"
   },
   "publishConfig": {
     "access": "public"

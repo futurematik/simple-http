@@ -1,5 +1,6 @@
 import { HttpValueCollection } from './HttpValueCollection';
 import { HttpContext } from './HttpContext';
+import { HttpHeaders } from './HttpHeaders';
 
 export interface HttpRequest<
   Body = string | Buffer | undefined,
@@ -8,7 +9,7 @@ export interface HttpRequest<
 > {
   body: Body;
   context: Context;
-  headers: HttpValueCollection;
+  headers: HttpHeaders;
   method: string;
   path: string;
   query?: Query;
