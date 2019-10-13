@@ -1,6 +1,6 @@
 {
   "name": "@fmtk/simple-http-lambda",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "lib/bundle.js",
   "types": "lib/index.d.ts",
   "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
@@ -8,7 +8,7 @@
   "private": false,
   "dependencies": {
     "@fmtk/package-path": "^0.1.2",
-    "@fmtk/simple-http": "^0.2.0"
+    "@fmtk/simple-http": "^0.3.0"
   },
   "scripts": {
     "build": "yarn clean && yarn lint && yarn compile",
