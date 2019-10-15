@@ -37,8 +37,7 @@ export function toAwsLambdaHandler(
       if (result.body === null || typeof result.body === 'undefined') {
         responseBody = '';
         isBase64Encoded = false;
-      }
-      if (typeof result.body === 'string') {
+      } else if (typeof result.body === 'string') {
         responseBody = result.body;
         isBase64Encoded = false;
       } else if (Buffer.isBuffer(result.body)) {
