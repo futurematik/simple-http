@@ -1,3 +1,4 @@
+export * from './corsHandler';
 export * from './HttpContext';
 export * from './HttpHandler';
 export { HttpHeaders } from './HttpHeaders';
