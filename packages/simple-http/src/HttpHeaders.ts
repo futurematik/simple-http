@@ -34,10 +34,12 @@ export class HttpHeaders {
 
   add(key: string, value: undefined | string | string[]): this {
     const keylc = key.toLowerCase();
-    if (typeof value === 'undefined') {
+    const values = addValue(this.values[keylc], value);
+
+    if (typeof values === 'undefined') {
       delete this.values[keylc];
     } else {
-      this.values[keylc] = addValue(this.values[keylc], value);
+      this.values[keylc] = values;
     }
     return this;
   }
@@ -48,8 +50,15 @@ export class HttpHeaders {
 
   default(key: string, value: string | string[]): this {
     const keylc = key.toLowerCase();
+    const norm = normaliseValue(value);
+
+    if (!norm) {
+      // do this check first so it doesn't depend on whether value is present
+      throw new TypeError(`can't default to empty header`);
+    }
+
     if (!(keylc in this.values)) {
-      this.values[keylc] = normaliseValue(value);
+      this.values[keylc] = norm;
     }
     return this;
   }
@@ -62,7 +71,7 @@ export class HttpHeaders {
   }
 
   get(key: string): undefined | string | string[] {
-    return this.values[key.toLowerCase()];
+    return normaliseValue(this.values[key.toLowerCase()]);
   }
 
   multiValues(): { [key: string]: string[] } {
@@ -74,10 +83,12 @@ export class HttpHeaders {
 
   set(key: string, value: undefined | string | string[]): this {
     const keylc = key.toLowerCase();
-    if (typeof value === 'undefined') {
+    const norm = normaliseValue(value);
+
+    if (typeof norm === 'undefined') {
       delete this.values[keylc];
     } else {
-      this.values[keylc] = normaliseValue(value);
+      this.values[keylc] = norm;
     }
     return this;
   }
@@ -90,27 +101,38 @@ export class HttpHeaders {
 export function setValue(
   values: HttpValueCollection,
   key: string,
-  value: string | string[],
+  value: string | string[] | undefined,
 ): HttpValueCollection {
   const keylcase = key.toLowerCase();
-  const existing = values[keylcase];
+  const norm = normaliseValue(value);
 
-  return {
-    ...values,
-    [keylcase]: addValue(existing, value),
-  };
+  if (norm) {
+    return {
+      ...values,
+      [keylcase]: norm,
+    };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { [keylcase]: except, ...rest } = values;
+  return rest;
 }
 
 export function addValue(
   existing: undefined | string | string[],
-  value: string | string[],
-): string | string[] {
+  value: string | string[] | undefined,
+): string | string[] | undefined {
+  const norm = normaliseValue(value);
+
+  if (!norm) {
+    return normaliseValue(existing);
+  }
   if (!existing) {
     return normaliseValue(value);
   } else if (Array.isArray(existing)) {
-    return normaliseValue(existing.concat(value));
+    return normaliseValue(existing.concat(norm));
   } else {
-    return [existing, ...denormaliseValue(value)];
+    return [existing, ...denormaliseValue(norm)];
   }
 }
 
@@ -133,10 +155,31 @@ export function entries(
   );
 }
 
-export function normaliseValue(value: string | string[]): string | string[] {
-  return Array.isArray(value) ? (value.length === 1 ? value[0] : value) : value;
+export function normaliseValue(
+  value: string | string[] | undefined,
+): string | string[] | undefined {
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return;
+    }
+    if (value.length === 1) {
+      return value[0];
+    }
+    return value;
+  }
+  if (value) {
+    return value;
+  }
 }
 
-export function denormaliseValue(value: string | string[]): string[] {
-  return Array.isArray(value) ? value : [value];
+export function denormaliseValue(
+  value: string | string[] | undefined,
+): string[] {
+  if (Array.isArray(value)) {
+    return value;
+  }
+  if (value) {
+    return [value];
+  }
+  return [];
 }

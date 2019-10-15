@@ -9,7 +9,6 @@ export function jsonHandler<Request extends object, Response extends object>(
   return async function(request): Promise<HttpResponse> {
     const { body, ...rest } = request;
 
-    debugger;
     const contentType = request.headers.get('Content-Type');
     let parsedBody: Request | undefined;
 

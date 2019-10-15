@@ -26,6 +26,20 @@ describe('HttpHeaders internals', () => {
       expect(output).toEqual(input[0]);
     });
 
+    it('turns a zero-element array into undefined', () => {
+      const input: string[] = [];
+      const output = normaliseValue(input);
+
+      expect(output).toBeUndefined();
+    });
+
+    it('turns an empty string into undefined', () => {
+      const input = '';
+      const output = normaliseValue(input);
+
+      expect(output).toBeUndefined();
+    });
+
     it('leaves a multi-element array as-is', () => {
       const input = ['one', 'two', 'three'];
       const output = normaliseValue(input);
