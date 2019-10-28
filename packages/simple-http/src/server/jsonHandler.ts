@@ -4,7 +4,7 @@ import { getValue } from '../values/getValue';
 import { HttpServerRequest } from './HttpServerRequest';
 import { overrideValues } from '../values/overrideValues';
 
-export function jsonHandler<Request extends object, Response extends object>(
+export function jsonHandler<Request, Response>(
   handler: HttpServer<Request, Response>,
 ): HttpServer {
   return async function(request): Promise<HttpServerResponse> {
