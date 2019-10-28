@@ -6,14 +6,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "lerna run build",
+    "build": "FORCE_COLOR=1 lerna run --stream build",
     "cdk": "yarn workspace @fmtk/simple-http-lambda-deploy cdk",
     "clean": "lerna run clean",
     "clean-npm": "find . -name node_modules -type d -prune -exec rm -rf {} \\;",
     "compile": "lerna run compile",
     "debug:lambda": "yarn dev:lambda --debug-port=5858",
     "dev:lambda": "yarn workspace @fmtk/simple-http-lambda-deploy start",
-    "lint": "lerna run lint",
+    "lint": "FORCE_COLOR=1 lerna run --parallel --stream lint",
     "test": "FORCE_COLOR=1 lerna run --stream test",
     "watch:compile": "FORCE_COLOR=1 lerna run --parallel --stream watch:compile"
   },
@@ -26,12 +26,14 @@
     ]
   },
   "devDependencies": {
+    "@fmtk/rollup-plugin-ts": "^0.2.0",
     "@types/aws-lambda": "^8.10.33",
     "@types/jest": "^24.0.18",
     "@typescript-eslint/eslint-plugin": "^2.3.0",
     "@typescript-eslint/parser": "^2.3.0",
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
     "glob": "^7.1.4",
     "jest": "^24.9.0",
@@ -42,9 +44,9 @@
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.2",
-    "rollup-plugin-typescript2": "^0.24.3",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
+    "tslib": "^1.10.0",
     "typescript": "^3.6.3"
   }
 }

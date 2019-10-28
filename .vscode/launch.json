@@ -10,9 +10,10 @@
       "request": "attach",
       "address": "localhost",
       "port": 5858,
-      "localRoot": "${workspaceRoot}/packages/simple-http-lambda-deploy/dist",
+      "localRoot": "${workspaceRoot}",
       "remoteRoot": "/var/task",
-      "skipFiles": ["<node_internals>/**/*.js"]
+      "skipFiles": ["<node_internals>/**/*.js"],
+      "sourceMaps": true
     }
   ]
 }

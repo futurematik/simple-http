@@ -12,7 +12,7 @@
     "compile": "rollup -c",
     "clean": "rm -rf lib/ dist/",
     "lint": "eslint src/ --ext=ts,tsx",
-    "test": "jest",
+    "test": "jest -c ../../jest.config.js",
     "watch:compile": "rollup -c -w"
   },
   "publishConfig": {

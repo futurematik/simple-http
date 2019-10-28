@@ -1,60 +1,43 @@
-import typescript from 'rollup-plugin-typescript2';
+import typescript from '@fmtk/rollup-plugin-ts';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 import builtin from 'builtin-modules';
 import bundleSize from 'rollup-plugin-bundle-size';
 
-export default process.env.DEBUG_LAMBDA
-  ? {
-      input: './src/testLambda.ts',
-      output: [
-        {
-          file: 'dist/lambda.js',
-          format: 'cjs',
-          sourcemap: true,
-        },
-      ],
+const DEBUGGING = !!process.env.DEBUG_LAMBDA;
 
-      plugins: [
-        resolve(),
-        commonjs(),
-        typescript({
-          tsconfigOverride: {
-            compilerOptions: {
-              module: 'es2015',
-            },
+export default {
+  input: './src/testLambda.ts',
+  output: [
+    {
+      file: 'dist/lambda.js',
+      format: 'cjs',
+    },
+  ],
+
+  plugins: [
+    resolve(),
+    commonjs(),
+    typescript({
+      tsconfig: {
+        overrides: {
+          compilerOptions: {
+            declaration: DEBUGGING,
+            declarationMap: DEBUGGING,
+            module: 'es2015',
+            sourceMap: DEBUGGING,
           },
-        }),
-      ],
-
-      external: [...builtin, 'aws-sdk'],
-    }
-  : {
-      input: './src/testLambda.ts',
-      output: [
-        {
-          file: 'dist/lambda.js',
-          format: 'cjs',
         },
-      ],
+      },
+    }),
+    DEBUGGING && terser({ output: { comments: false } }),
+    DEBUGGING && bundleSize(),
+  ].filter(Boolean),
 
-      plugins: [
-        resolve(),
-        commonjs(),
-        typescript({
-          tsconfigOverride: {
-            compilerOptions: {
-              declaration: false,
-              declarationMap: false,
-              module: 'es2015',
-              sourceMap: false,
-            },
-          },
-        }),
-        terser({ output: { comments: false } }),
-        bundleSize(),
-      ],
+  external: DEBUGGING ? nonLocal : [...builtin, 'aws-sdk'],
+};
 
-      external: [...builtin, 'aws-sdk'],
-    };
+function nonLocal(id) {
+  return !id.startsWith('.') && !id.startsWith('/') && !id.startsWith('\0');
+}
