@@ -1,5 +1,5 @@
 import { ValueCollection } from '../values/ValueCollection';
-import { HttpClient } from './HttpClient';
+import { HttpClient, HttpClientBase } from './HttpClient';
 import { HttpClientRequest } from './HttpClientRequest';
 import { HttpClientResponse } from './HttpClientResponse';
 import { getLastValue } from '../values/getLastValue';
@@ -8,6 +8,7 @@ import { foldHeaders } from '../common/foldHeaders';
 import { setValue } from '../values/setValue';
 import { HttpValueCollection } from '../values/HttpValueCollection';
 import { addValue } from '../values/addValue';
+import { enhanceClient } from './enhanceClient';
 
 export interface FetchRequestInit {
   method?: string;
@@ -32,7 +33,7 @@ export interface FetchLike {
   (url: string, init: FetchRequestInit): Promise<FetchResponse>;
 }
 
-export function makeFetchClient(fetchImpl: FetchLike): HttpClient {
+export function makeFetchClientBase(fetchImpl: FetchLike): HttpClientBase {
   return async <Req, Res>(
     req: HttpClientRequest<Req>,
   ): Promise<HttpClientResponse<Res>> => {
@@ -101,4 +102,8 @@ export function makeFetchClient(fetchImpl: FetchLike): HttpClient {
     };
     return ret;
   };
+}
+
+export function makeFetchClient(fetchImpl: FetchLike): HttpClient {
+  return enhanceClient(makeFetchClientBase(fetchImpl));
 }

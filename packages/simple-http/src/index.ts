@@ -1,5 +1,8 @@
+export * from './client/adaptClient';
+export * from './client/enhanceClient';
 export * from './client/fetchClient';
 export * from './client/HttpClient';
+export * from './client/HttpClientAdapter';
 export * from './client/HttpClientRequest';
 export * from './client/HttpClientResponse';
 
