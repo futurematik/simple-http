@@ -15,10 +15,10 @@ export function enhanceClient(client: HttpClientBase): HttpClient {
   ): Promise<HttpClientResponse<Res>>;
   async function enhanced<Res>(
     request: HttpClientRequestFunc<Res>,
-  ): Promise<HttpClientResponse<Res>>;
+  ): Promise<Res>;
   async function enhanced<Req, Res>(
     request: HttpClientRequest<Req> | HttpClientRequestFunc<Res>,
-  ): Promise<HttpClientResponse<Res>> {
+  ): Promise<Res | HttpClientResponse<Res>> {
     if (typeof request === 'function') {
       return await request(enhanced);
     }

@@ -8,11 +8,9 @@ export interface HttpClientBase {
 }
 
 export interface HttpClientRequestFunc<Res> {
-  (client: HttpClient): PromiseLike<HttpClientResponse<Res>>;
+  (client: HttpClient): PromiseLike<Res>;
 }
 
 export interface HttpClient extends HttpClientBase {
-  <Res>(request: HttpClientRequestFunc<Res>): PromiseLike<
-    HttpClientResponse<Res>
-  >;
+  <Res>(request: HttpClientRequestFunc<Res>): PromiseLike<Res>;
 }
