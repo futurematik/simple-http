@@ -6,6 +6,7 @@ export * from './client/HttpClientRequest';
 export * from './client/HttpClientResponse';
 export * from './client/jsonClient';
 export * from './client/makeClient';
+export * from './client/throwIfNotOk';
 
 export * from './common/foldHeaders';
 export * from './common/HttpContentType';
