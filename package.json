@@ -14,6 +14,9 @@
     "debug:lambda": "yarn dev:lambda --debug-port=5858",
     "dev:lambda": "yarn workspace @fmtk/simple-http-lambda-deploy start",
     "lint": "FORCE_COLOR=1 lerna run --parallel --stream lint",
+    "postversion": "git push --follow-tags",
+    "prepare": "yarn build",
+    "preversion": "yarn build",
     "test": "FORCE_COLOR=1 lerna run --stream test",
     "watch:compile": "FORCE_COLOR=1 lerna run --parallel --stream watch:compile"
   },
