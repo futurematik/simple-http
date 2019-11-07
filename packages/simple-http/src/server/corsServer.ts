@@ -1,7 +1,8 @@
 import { HttpServer } from './HttpServer';
+import { HttpServerMiddleware } from './HttpServerMiddleware';
 import { HttpServerRequest } from './HttpServerRequest';
 import { HttpServerResponse } from './HttpServerResponse';
-import { getValue } from '../values/getValue';
+import { getLastValue } from '../values/getLastValue';
 import { HttpValueCollection } from '../values/HttpValueCollection';
 import { overrideValues } from '../values/overrideValues';
 
@@ -29,40 +30,39 @@ export type CorsCallback<Request> = (
   request: Request,
 ) => PromiseLike<CorsOptions>;
 
-export function corsHandler<Request, Response>(
-  handler: HttpServer<Request, Response>,
-  options: CorsOptions | CorsCallback<HttpServerRequest<Request>> = {},
-): HttpServer<Request, Response | undefined> {
-  return async (
-    request: HttpServerRequest<Request>,
-  ): Promise<HttpServerResponse<Response | undefined>> => {
-    let finalOpts: Required<CorsOptions>;
+export function corsServer(
+  options: CorsOptions | CorsCallback<HttpServerRequest> = {},
+): HttpServerMiddleware {
+  return (handler: HttpServer): HttpServer => {
+    return async (request: HttpServerRequest): Promise<HttpServerResponse> => {
+      let finalOpts: Required<CorsOptions>;
 
-    if (typeof options === 'function') {
-      finalOpts = { ...defaultCorsOptions, ...(await options(request)) };
-    } else {
-      finalOpts = { ...defaultCorsOptions, ...options };
-    }
-
-    if (request.method === 'OPTIONS') {
-      if (getValue(request.headers, 'Access-Control-Request-Method')) {
-        // preflight request
-        return {
-          status: 204,
-          headers: makeHeaders(finalOpts, false),
-          body: undefined,
-        };
+      if (typeof options === 'function') {
+        finalOpts = { ...defaultCorsOptions, ...(await options(request)) };
+      } else {
+        finalOpts = { ...defaultCorsOptions, ...options };
       }
-    }
 
-    const response = await handler(request);
+      if (request.method === 'OPTIONS') {
+        if (getLastValue(request.headers, 'Access-Control-Request-Method')) {
+          // preflight request
+          return {
+            status: 204,
+            headers: makeHeaders(finalOpts, false),
+            body: undefined,
+          };
+        }
+      }
 
-    return {
-      ...response,
-      headers: overrideValues(
-        response.headers || {},
-        makeHeaders(finalOpts, true),
-      ),
+      const response = await handler(request);
+
+      return {
+        ...response,
+        headers: overrideValues(
+          response.headers || {},
+          makeHeaders(finalOpts, true),
+        ),
+      };
     };
   };
 }

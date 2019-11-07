@@ -1,17 +1,12 @@
 import { HttpValueCollection } from '../values/HttpValueCollection';
-import { ValueCollection } from '../values/ValueCollection';
 
-export interface HttpServerRequest<
-  Body = string | Buffer | undefined,
-  Context extends ValueCollection<unknown> = ValueCollection<unknown>,
-  Query = HttpValueCollection
-> {
+export interface HttpServerRequest<Body = unknown, Ctx = unknown, Q = unknown> {
   body: Body;
-  context: Context;
+  context: Ctx;
   headers: HttpValueCollection;
   method: string;
   path: string;
-  query?: Query;
+  query?: Q;
   rawQuery?: string;
   resourcePath?: string;
 }

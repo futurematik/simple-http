@@ -2,10 +2,7 @@ import { ValueCollection } from '../values/ValueCollection';
 import { HttpClient, HttpClientBase } from './HttpClient';
 import { HttpClientRequest } from './HttpClientRequest';
 import { HttpClientResponse } from './HttpClientResponse';
-import { getLastValue } from '../values/getLastValue';
-import { HttpContentType } from '../common/HttpContentType';
 import { foldHeaders } from '../common/foldHeaders';
-import { setValue } from '../values/setValue';
 import { HttpValueCollection } from '../values/HttpValueCollection';
 import { addValue } from '../values/addValue';
 import { enhanceClient } from './enhanceClient';
@@ -13,7 +10,7 @@ import { enhanceClient } from './enhanceClient';
 export interface FetchRequestInit {
   method?: string;
   headers?: ValueCollection<string>;
-  body?: string | Buffer;
+  body?: string;
 }
 
 export interface FetchResponseHeaders {
@@ -22,8 +19,8 @@ export interface FetchResponseHeaders {
 }
 
 export interface FetchResponse {
-  status: number;
   headers: FetchResponseHeaders;
+  status: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   json(): Promise<any>;
   text(): Promise<string>;
@@ -37,68 +34,35 @@ export function makeFetchClientBase(fetchImpl: FetchLike): HttpClientBase {
   return async <Req, Res>(
     req: HttpClientRequest<Req>,
   ): Promise<HttpClientResponse<Res>> => {
-    const { url, body, method = body ? 'POST' : 'GET' } = req;
-    let headers = req.headers || {};
-    let encodedBody: string | Buffer | undefined;
+    const { body, headers = {}, method = body ? 'POST' : 'GET', url } = req;
 
     if (
-      typeof body === 'undefined' ||
-      typeof body === 'string' ||
-      Buffer.isBuffer(body)
+      typeof body !== 'undefined' &&
+      typeof body !== 'string' &&
+      body !== null
     ) {
-      encodedBody = body || undefined;
-    } else {
-      const [contentType] = (
-        getLastValue(headers, 'content-type') || HttpContentType.Json
-      ).split(';');
-
-      switch (contentType) {
-        case HttpContentType.Json:
-          encodedBody = JSON.stringify(body);
-          break;
-
-        case HttpContentType.Form:
-          encodedBody = new URLSearchParams(body as {}).toString();
-          break;
-
-        default:
-          throw new Error(
-            `don't know how to encode content-type: ${contentType}`,
-          );
-      }
-
-      headers = setValue(headers, 'content-type', contentType);
+      throw new Error(`expected body to be string, undefined or null`);
     }
 
     const response = await fetchImpl(url, {
       method,
       headers: foldHeaders(headers),
-      body: encodedBody,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      body: body as any,
     });
 
-    let responseBody: Res;
+    const responseBody = await response.text();
     let responseHeaders: HttpValueCollection = {};
 
     response.headers.forEach((value, name): void => {
       responseHeaders = addValue(responseHeaders, name, value);
     });
 
-    const [responseType] = (
-      getLastValue(responseHeaders, 'content-type') || ''
-    ).split(';');
-
-    if (responseType === HttpContentType.Json) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      responseBody = (await response.json()) as any;
-    } else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      responseBody = (await response.text()) as any;
-    }
-
     const ret = {
       status: response.status,
       headers: responseHeaders,
-      body: responseBody,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      body: responseBody as any,
     };
     return ret;
   };

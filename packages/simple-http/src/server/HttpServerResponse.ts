@@ -1,6 +1,6 @@
 import { HttpValueCollection } from '../values/HttpValueCollection';
 
-export interface HttpServerResponse<Body = string | Buffer | undefined> {
+export interface HttpServerResponse<Body = unknown> {
   body: Body;
   headers?: HttpValueCollection;
   status: number;

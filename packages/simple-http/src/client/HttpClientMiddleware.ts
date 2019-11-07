@@ -1,5 +1,5 @@
 import { HttpClient } from './HttpClient';
 
-export interface HttpClientAdapter {
+export interface HttpClientMiddleware {
   (client: HttpClient): HttpClient;
 }

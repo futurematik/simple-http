@@ -534,10 +534,10 @@
   resolved "https://registry.npmjs.org/@fmtk/package-path/-/package-path-0.1.2.tgz#16c671e9e4ce28fa8feae84815ba5ea826d756ab"
   integrity sha512-XMSnnThdb6EAzI9ToI/Ca8JeE3jqKOdplzFVtlVfyYgb10FaXzcDTbh83PfdXECX9oTxeAkkVxj9JEF7VlLSxg==
 
-"@fmtk/rollup-plugin-ts@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@fmtk/rollup-plugin-ts/-/rollup-plugin-ts-0.2.0.tgz#6bc5de63036e6118f5e425038a15921fc0a6a5c7"
-  integrity sha512-o1fL0j8wfu2sZlJAMQJgQVW+vnyoAXJ1rnbGIzxxXaeXgydbpi0TQszHOO0dfTy+YveqFImexIHPXYZil5uXXQ==
+"@fmtk/rollup-plugin-ts@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.npmjs.org/@fmtk/rollup-plugin-ts/-/rollup-plugin-ts-0.3.2.tgz#c13e8490b196ace003e2a4137b0063cd058548fb"
+  integrity sha512-QNMsI7Oby67gUahlPnejiUVpujogKJiHmA2EuxbWXZUAmxI991yEmGrBt6UaS6zTzicljLdNMo6EoovFmwDZWQ==
   dependencies:
     debug "^4.1.1"
     lodash.merge "^4.6.2"
