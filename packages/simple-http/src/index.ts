@@ -7,11 +7,13 @@ export * from './client/HttpClientResponse';
 export * from './client/jsonClient';
 export * from './client/makeClient';
 export * from './client/throwIfNotOk';
+export * from './client/traceClient';
 
 export * from './common/foldHeaders';
 export * from './common/HttpContentType';
 export * from './common/HttpError';
 export * from './common/parseHeaderParams';
+export * from './common/LogInterop';
 
 export * from './server/corsServer';
 export * from './server/getRequestUrl';
@@ -22,6 +24,7 @@ export * from './server/HttpServerRequest';
 export * from './server/HttpServerResponse';
 export * from './server/jsonServer';
 export * from './server/makeServer';
+export * from './server/serverError';
 
 export * from './values/addToValues';
 export * from './values/addValue';
