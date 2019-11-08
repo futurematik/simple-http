@@ -1,6 +1,6 @@
 {
   "name": "@fmtk/simple-http-lambda",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "main": "lib/bundle.js",
   "module": "lib/bundle.esm.js",
   "types": "lib/index.d.ts",
@@ -9,7 +9,7 @@
   "private": false,
   "dependencies": {
     "@fmtk/package-path": "^0.1.2",
-    "@fmtk/simple-http": "^0.6.5"
+    "@fmtk/simple-http": "^0.6.6"
   },
   "scripts": {
     "build": "yarn clean && yarn lint && yarn compile",
