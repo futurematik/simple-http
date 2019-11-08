@@ -6,7 +6,7 @@ export default {
   input: './src/index.ts',
   output: [
     {
-      file: 'lib/bundle.mjs',
+      file: 'lib/bundle.esm.js',
       format: 'esm',
       sourcemap: true,
     },
