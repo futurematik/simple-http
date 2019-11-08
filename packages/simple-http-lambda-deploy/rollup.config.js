@@ -13,6 +13,7 @@ export default {
     {
       file: 'dist/lambda.js',
       format: 'cjs',
+      sourcemap: DEBUGGING,
     },
   ],
 
@@ -31,8 +32,8 @@ export default {
         },
       },
     }),
-    DEBUGGING && terser({ output: { comments: false } }),
-    DEBUGGING && bundleSize(),
+    !DEBUGGING && terser({ output: { comments: false } }),
+    !DEBUGGING && bundleSize(),
   ].filter(Boolean),
 
   external: DEBUGGING ? nonLocal : [...builtin, 'aws-sdk'],

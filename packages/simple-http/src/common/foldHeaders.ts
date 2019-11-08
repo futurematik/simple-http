@@ -5,7 +5,7 @@ export function foldHeaders(
 ): ValueCollection<string> {
   return Object.keys(headers).reduce(
     (a, x) => {
-      const value = foldHeaderValue(x);
+      const value = foldHeaderValue(headers[x]);
       return value ? { ...a, [x]: value } : a;
     },
     {} as ValueCollection<string>,

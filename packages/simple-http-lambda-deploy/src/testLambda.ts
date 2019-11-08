@@ -5,6 +5,7 @@ import {
   HttpServerRequest,
   getRequestUrl,
   makeServer,
+  traceServer,
 } from '@fmtk/simple-http';
 import { awsLambda } from '@fmtk/simple-http-lambda';
 
@@ -19,6 +20,6 @@ export const handler = makeServer(
       },
     };
   },
-  [corsServer(), jsonServer()],
-  awsLambda,
+  [traceServer({ trace: console.log }), corsServer(), jsonServer()],
+  awsLambda(),
 );
