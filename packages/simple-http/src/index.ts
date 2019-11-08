@@ -25,6 +25,7 @@ export * from './server/HttpServerResponse';
 export * from './server/jsonServer';
 export * from './server/makeServer';
 export * from './server/serverError';
+export * from './server/traceServer';
 
 export * from './values/addToValues';
 export * from './values/addValue';
