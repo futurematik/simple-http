@@ -108,7 +108,6 @@ export function lambdaWebSocket(): WebSocketServerAdapter<LambdaWebSocket> {
         },
 
         async send(id, message): Promise<void> {
-          console.log(`SEND`, JSON.stringify({ id, message }, null, 2));
           const messageStr = JSON.stringify(message);
 
           if (id === connectionId) {
@@ -137,8 +136,6 @@ export function lambdaWebSocket(): WebSocketServerAdapter<LambdaWebSocket> {
         },
       };
 
-      console.log(`HANDLER`, JSON.stringify(event, null, 2));
-
       if (isConnectEvent(event)) {
         if (server.connect) {
           await server.connect(conn);
@@ -153,7 +150,6 @@ export function lambdaWebSocket(): WebSocketServerAdapter<LambdaWebSocket> {
         }
       }
 
-      console.log(`RESPONSE`, JSON.stringify(response, null, 2));
       return response;
     };
   };
