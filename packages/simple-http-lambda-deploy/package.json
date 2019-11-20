@@ -13,11 +13,12 @@
     "@aws-cdk/core": "^1.12.0",
     "@fmtk/simple-http": "^0.6.8",
     "@fmtk/simple-http-lambda": "^0.5.8",
-    "aws-cdk": "^1.12.0"
+    "aws-sdk": "^2.575.0"
   },
   "scripts": {
-    "build": "yarn clean && yarn lint && yarn compile",
+    "build": "yarn clean && yarn lint && yarn compile && yarn copydeps",
     "compile": "rollup -c",
+    "copydeps": "mkdir -p dist/ && cp -aR node_modules dist/",
     "clean": "rm -rf lib/ dist/ cdk.out/",
     "lint": "eslint src/ --ext=ts,tsx",
     "start": "DEBUG_LAMBDA=1 cdk synth --no-staging -c debugging=true && sam local start-api -t cdk.out/SimpleHttpLambdaTestStack.template.json",

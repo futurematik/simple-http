@@ -1,7 +1,9 @@
 import path from 'path';
 import * as agw from '@aws-cdk/aws-apigateway';
 import * as cdk from '@aws-cdk/core';
+import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
+import { Stack } from '@aws-cdk/core';
 
 const codeSource = {
   base: path.resolve(__dirname, '../dist'),
@@ -41,6 +43,142 @@ class SimpleHttpLambdaTestStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'ApiUrl', {
       value: api.url,
+    });
+
+    const webSocketHandlerRole = new iam.Role(this, 'WebSocketHandlerRole', {
+      assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+      managedPolicies: [
+        iam.ManagedPolicy.fromAwsManagedPolicyName(
+          'service-role/AWSLambdaBasicExecutionRole',
+        ),
+      ],
+    });
+
+    const webSocketHandler = new lambda.Function(
+      this,
+      'WebSocketHandlerFunction',
+      {
+        code: lambda.AssetCode.fromAsset(codeSource.base),
+        handler: 'lambda.socketHandler',
+        runtime: lambda.Runtime.NODEJS_10_X,
+        role: webSocketHandlerRole,
+      },
+    );
+
+    const wsApi = new cdk.CfnResource(this, 'WsTestApi', {
+      type: 'AWS::ApiGatewayV2::Api',
+      properties: {
+        Name: 'WsTestApi',
+        ProtocolType: 'WEBSOCKET',
+        RouteSelectionExpression: '$request.body.apigwroute',
+      },
+    });
+
+    const wsApiIntegration = new cdk.CfnResource(this, 'WsTestApiIntegration', {
+      type: 'AWS::ApiGatewayV2::Integration',
+      properties: {
+        ApiId: wsApi.ref,
+        IntegrationType: 'AWS_PROXY',
+        IntegrationUri: Stack.of(this).formatArn({
+          service: 'apigateway',
+          account: 'lambda',
+          resource: 'path',
+          sep: '/',
+          resourceName: `2015-03-31/functions/${webSocketHandler.functionArn}/invocations`,
+        }),
+      },
+    });
+
+    const wsApiConnectRoute = new cdk.CfnResource(
+      this,
+      'WsTestApiConnectRoute',
+      {
+        type: 'AWS::ApiGatewayV2::Route',
+        properties: {
+          ApiId: wsApi.ref,
+          OperationName: 'ConnectRoute',
+          RouteKey: '$connect',
+          Target: `integrations/${wsApiIntegration.ref}`,
+        },
+      },
+    );
+
+    const wsApiDisconnectRoute = new cdk.CfnResource(
+      this,
+      'WsTestApiDisconnectRoute',
+      {
+        type: 'AWS::ApiGatewayV2::Route',
+        properties: {
+          ApiId: wsApi.ref,
+          OperationName: 'DisconnectRoute',
+          RouteKey: '$disconnect',
+          Target: `integrations/${wsApiIntegration.ref}`,
+        },
+      },
+    );
+
+    const wsApiDefaultRoute = new cdk.CfnResource(
+      this,
+      'WsTestApiDefaultRoute',
+      {
+        type: 'AWS::ApiGatewayV2::Route',
+        properties: {
+          ApiId: wsApi.ref,
+          OperationName: 'DefaultRoute',
+          RouteKey: '$default',
+          Target: `integrations/${wsApiIntegration.ref}`,
+        },
+      },
+    );
+
+    const wsApiDeployment = new cdk.CfnResource(this, 'WsTestApiDeployment', {
+      type: 'AWS::ApiGatewayV2::Deployment',
+      properties: {
+        ApiId: wsApi.ref,
+      },
+    });
+
+    wsApiDeployment.addDependsOn(wsApiConnectRoute);
+    wsApiDeployment.addDependsOn(wsApiDisconnectRoute);
+    wsApiDeployment.addDependsOn(wsApiDefaultRoute);
+
+    const wsApiStage = new cdk.CfnResource(this, 'WsTestApiStage', {
+      type: 'AWS::ApiGatewayV2::Stage',
+      properties: {
+        ApiId: wsApi.ref,
+        StageName: 'prod',
+        DeploymentId: wsApiDeployment.ref,
+      },
+    });
+
+    const wsApiStageArn = Stack.of(this).formatArn({
+      service: 'execute-api',
+      resource: wsApi.ref,
+      sep: '/',
+      resourceName: `${wsApiStage.ref}/*`,
+    });
+
+    const principal = new iam.ServicePrincipal('apigateway.amazonaws.com');
+    webSocketHandler.addPermission(`ApiPermission.${wsApi.node.uniqueId}`, {
+      principal,
+      scope: wsApiIntegration,
+      sourceArn: wsApiStageArn,
+    });
+
+    new iam.Policy(this, 'WebSockerHandlerSendPermission', {
+      roles: [webSocketHandlerRole],
+      statements: [
+        new iam.PolicyStatement({
+          actions: ['execute-api:ManageConnections'],
+          resources: [wsApiStageArn],
+        }),
+      ],
+    });
+
+    new cdk.CfnOutput(this, 'WsTestApiUri', {
+      value: `wss://${wsApi.ref}.execute-api.${
+        Stack.of(this).region
+      }.amazonaws.com/${wsApiStage.ref}`,
     });
   }
 }

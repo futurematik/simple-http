@@ -25,7 +25,8 @@
       "packages/*"
     ],
     "nohoist": [
-      "@fmtk/simple-http-lambda/**"
+      "@fmtk/simple-http-lambda-deploy/aws-sdk",
+      "@fmtk/simple-http-lambda-deploy/aws-sdk/**"
     ]
   },
   "devDependencies": {
@@ -34,6 +35,7 @@
     "@types/jest": "^24.0.18",
     "@typescript-eslint/eslint-plugin": "^2.3.0",
     "@typescript-eslint/parser": "^2.3.0",
+    "aws-cdk": "^1.12.0",
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-import": "^2.18.2",

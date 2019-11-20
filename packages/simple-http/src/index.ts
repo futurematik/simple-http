@@ -38,3 +38,8 @@ export * from './values/overrideValues';
 export * from './values/setValue';
 export * from './values/toArrayValues';
 export * from './values/ValueCollection';
+
+export * from './websockets/makeWebSocketServer';
+export * from './websockets/WebSocketConnection';
+export * from './websockets/WebSocketServer';
+export * from './websockets/WebSocketServerAdapter';

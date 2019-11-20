@@ -9,7 +9,8 @@
   "private": false,
   "dependencies": {
     "@fmtk/package-path": "^0.1.2",
-    "@fmtk/simple-http": "^0.6.8"
+    "@fmtk/simple-http": "^0.6.8",
+    "aws-sdk": "^2.575.0"
   },
   "scripts": {
     "build": "yarn clean && yarn lint && yarn compile",
@@ -20,5 +21,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "devDependencies": {}
 }
