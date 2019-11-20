@@ -1,6 +1,6 @@
 {
   "name": "@fmtk/simple-http-lambda-deploy",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "main": "lib/index.js",
   "author": "Gordon Leigh <gordon.leigh@futurematik.co.uk>",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "@aws-cdk/aws-lambda-event-sources": "^1.12.0",
     "@aws-cdk/core": "^1.12.0",
     "@fmtk/simple-http": "^0.6.9",
-    "@fmtk/simple-http-lambda": "^0.5.9",
+    "@fmtk/simple-http-lambda": "^0.5.10",
     "aws-sdk": "^2.575.0"
   },
   "scripts": {
