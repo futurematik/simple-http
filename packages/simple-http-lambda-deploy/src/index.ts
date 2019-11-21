@@ -98,7 +98,20 @@ class SimpleHttpLambdaTestStack extends cdk.Stack {
           ApiId: wsApi.ref,
           OperationName: 'ConnectRoute',
           RouteKey: '$connect',
+          RouteResponseSelectionExpression: '$default',
           Target: `integrations/${wsApiIntegration.ref}`,
+        },
+      },
+    );
+    const wsApiConnectRouteResponse = new cdk.CfnResource(
+      this,
+      'WsTestApiConnectRouteResponse',
+      {
+        type: 'AWS::ApiGatewayV2::RouteResponse',
+        properties: {
+          ApiId: wsApi.ref,
+          RouteId: wsApiConnectRoute.ref,
+          RouteResponseKey: '$default',
         },
       },
     );
@@ -112,7 +125,20 @@ class SimpleHttpLambdaTestStack extends cdk.Stack {
           ApiId: wsApi.ref,
           OperationName: 'DisconnectRoute',
           RouteKey: '$disconnect',
+          RouteResponseSelectionExpression: '$default',
           Target: `integrations/${wsApiIntegration.ref}`,
+        },
+      },
+    );
+    const wsApiDisconnectRouteResponse = new cdk.CfnResource(
+      this,
+      'WsTestApiDisconnectRouteResponse',
+      {
+        type: 'AWS::ApiGatewayV2::RouteResponse',
+        properties: {
+          ApiId: wsApi.ref,
+          RouteId: wsApiDisconnectRoute.ref,
+          RouteResponseKey: '$default',
         },
       },
     );
@@ -126,7 +152,20 @@ class SimpleHttpLambdaTestStack extends cdk.Stack {
           ApiId: wsApi.ref,
           OperationName: 'DefaultRoute',
           RouteKey: '$default',
+          RouteResponseSelectionExpression: '$default',
           Target: `integrations/${wsApiIntegration.ref}`,
+        },
+      },
+    );
+    const wsApiDefaultRouteResponse = new cdk.CfnResource(
+      this,
+      'WsTestApiDefaultRouteResponse',
+      {
+        type: 'AWS::ApiGatewayV2::RouteResponse',
+        properties: {
+          ApiId: wsApi.ref,
+          RouteId: wsApiDefaultRoute.ref,
+          RouteResponseKey: '$default',
         },
       },
     );
@@ -141,6 +180,9 @@ class SimpleHttpLambdaTestStack extends cdk.Stack {
     wsApiDeployment.addDependsOn(wsApiConnectRoute);
     wsApiDeployment.addDependsOn(wsApiDisconnectRoute);
     wsApiDeployment.addDependsOn(wsApiDefaultRoute);
+    wsApiDeployment.addDependsOn(wsApiConnectRouteResponse);
+    wsApiDeployment.addDependsOn(wsApiDisconnectRouteResponse);
+    wsApiDeployment.addDependsOn(wsApiDefaultRouteResponse);
 
     const wsApiStage = new cdk.CfnResource(this, 'WsTestApiStage', {
       type: 'AWS::ApiGatewayV2::Stage',

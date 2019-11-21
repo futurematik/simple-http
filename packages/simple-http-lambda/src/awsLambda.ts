@@ -14,7 +14,7 @@ import {
 export type AsyncLambdaHandler<TEvent = any, TResult = any> = (
   event: TEvent,
   context: Context,
-) => Promise<TResult>;
+) => PromiseLike<TResult>;
 
 export type AsyncAPIGatewayProxyHandler = AsyncLambdaHandler<
   APIGatewayProxyEvent,
