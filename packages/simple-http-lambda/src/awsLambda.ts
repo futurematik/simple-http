@@ -5,14 +5,24 @@ import {
   toArrayValues,
 } from '@fmtk/simple-http';
 import {
-  APIGatewayProxyHandler,
   APIGatewayProxyEvent,
   APIGatewayProxyResult,
   Context,
 } from 'aws-lambda';
 
-export function awsLambda(): HttpServerAdapter<APIGatewayProxyHandler> {
-  return (handler: HttpServer): APIGatewayProxyHandler =>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AsyncLambdaHandler<TEvent = any, TResult = any> = (
+  event: TEvent,
+  context: Context,
+) => Promise<TResult>;
+
+export type AsyncAPIGatewayProxyHandler = AsyncLambdaHandler<
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult
+>;
+
+export function awsLambda(): HttpServerAdapter<AsyncAPIGatewayProxyHandler> {
+  return (handler: HttpServer): AsyncAPIGatewayProxyHandler =>
     async function(
       event: APIGatewayProxyEvent,
       context: Context,
