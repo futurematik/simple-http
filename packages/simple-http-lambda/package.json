@@ -1,6 +1,6 @@
 {
   "name": "@fmtk/simple-http-lambda",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "main": "lib/bundle.js",
   "module": "lib/bundle.esm.js",
   "types": "lib/index.d.ts",
