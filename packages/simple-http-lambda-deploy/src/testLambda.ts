@@ -7,6 +7,7 @@ import {
   makeServer,
   traceServer,
   makeWebSocketServer,
+  traceWebSocket,
 } from '@fmtk/simple-http';
 import { awsLambda, lambdaWebSocket } from '@fmtk/simple-http-lambda';
 
@@ -37,5 +38,6 @@ export const socketHandler = makeWebSocketServer(
       }
     },
   },
+  [traceWebSocket({ trace: console.log })],
   lambdaWebSocket(),
 );

@@ -40,6 +40,8 @@ export * from './values/toArrayValues';
 export * from './values/ValueCollection';
 
 export * from './websockets/makeWebSocketServer';
+export * from './websockets/traceWebSocket';
 export * from './websockets/WebSocketConnection';
+export * from './websockets/WebSocketMiddleware';
 export * from './websockets/WebSocketServer';
 export * from './websockets/WebSocketServerAdapter';
