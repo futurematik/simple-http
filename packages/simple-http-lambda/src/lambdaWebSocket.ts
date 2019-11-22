@@ -27,7 +27,7 @@ export type LambdaWebSocketEventType = 'CONNECT' | 'MESSAGE' | 'DISCONNECT';
 
 export interface LambdaWebSocketRequestContext {
   apiId: string;
-  auth?: ValueCollection<string>;
+  authorizer?: ValueCollection<string>;
   connectedAt: number;
   connectionId: string;
   domainName: string;
@@ -92,7 +92,10 @@ export interface LambdaWebSocket {
 
 export function lambdaWebSocket(): WebSocketServerAdapter<LambdaWebSocket> {
   return (server: WebSocketServer): LambdaWebSocket => {
-    return async (event): Promise<LambdaWebSocketResponse | undefined> => {
+    return async (
+      event,
+      context,
+    ): Promise<LambdaWebSocketResponse | undefined> => {
       let apigw: ApiGatewayManagementApi | undefined;
       const connectionId = event.requestContext.connectionId;
 
@@ -104,7 +107,8 @@ export function lambdaWebSocket(): WebSocketServerAdapter<LambdaWebSocket> {
         id: connectionId,
 
         ctx: {
-          auth: event.requestContext.auth,
+          auth: event.requestContext.authorizer,
+          aws: { event, context },
         },
 
         async send(id, message): Promise<void> {

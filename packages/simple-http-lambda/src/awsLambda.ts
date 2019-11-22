@@ -37,8 +37,9 @@ export function awsLambda(): HttpServerAdapter<AsyncAPIGatewayProxyHandler> {
         const response = await handler({
           body: requestBody || undefined,
           context: {
-            pathParameters: event.pathParameters,
+            auth: event.requestContext.authorizer,
             aws: { event, context },
+            pathParameters: event.pathParameters,
           },
           headers: fromArrayValues(event.multiValueHeaders),
           method: event.httpMethod,
