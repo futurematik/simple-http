@@ -63,9 +63,9 @@ export function invokeHandlerFromLambda<Req, Res>(
       },
       headers: fromArrayValues(event.multiValueHeaders),
       method: event.httpMethod,
-      path: event.requestContext.path,
+      path: event.requestContext.path, // https://aws.com/prod/{account}/widgets => /prod/account/widgets
       query: fromArrayValues(event.multiValueQueryStringParameters || {}),
-      resourcePath: event.path,
+      resourcePath: event.path, // https://aws.com/prod/{account}/widgets => /account/widgets
     });
   };
 }
