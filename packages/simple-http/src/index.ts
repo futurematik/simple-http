@@ -1,5 +1,6 @@
 export * from './client/enhanceClient';
 export * from './client/fetchClient';
+export * from './client/httpBasicAuth';
 export * from './client/HttpClient';
 export * from './client/HttpClientMiddleware';
 export * from './client/HttpClientRequest';
@@ -7,13 +8,15 @@ export * from './client/HttpClientResponse';
 export * from './client/jsonClient';
 export * from './client/makeClient';
 export * from './client/throwIfNotOk';
+export * from './client/tokenAuth';
 export * from './client/traceClient';
 
 export * from './common/foldHeaders';
 export * from './common/HttpContentType';
 export * from './common/HttpError';
-export * from './common/parseHeaderParams';
 export * from './common/LogInterop';
+export * from './common/makeUrl';
+export * from './common/parseHeaderParams';
 
 export * from './server/corsServer';
 export * from './server/getRequestUrl';
