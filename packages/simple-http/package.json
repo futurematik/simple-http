@@ -1,6 +1,6 @@
 {
   "name": "@fmtk/simple-http",
-  "version": "0.6.10",
+  "version": "0.6.11",
   "main": "lib/bundle.js",
   "module": "lib/bundle.esm.js",
   "types": "lib/index.d.ts",
